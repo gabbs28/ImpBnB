@@ -2,6 +2,7 @@
 
 ## Database Schema Design
 
+MARK DOWN SYNTAX
 ![impbnb-database-schema]
 
 [impbnb-database-schema]: ./images/SCHEMA-1.jpg
