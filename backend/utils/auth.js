@@ -38,7 +38,7 @@ const setTokenCookie = (res, user) => {
 
   // backend/utils/auth.js
 // ...
-
+// Restore session user
 const restoreUser = (req, res, next) => {
     // token parsed from cookies
     const { token } = req.cookies;

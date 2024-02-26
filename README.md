@@ -46,7 +46,7 @@ correct role(s) or permission(s).
     }
     ```
 
-### Get the Current User
+### Get the Current User --done
 
 Returns the information about the current user that is logged in.
 
@@ -86,7 +86,7 @@ Returns the information about the current user that is logged in.
     }
     ```
 
-### Log In a User
+### Log In a User --done
 
 Logs in a current user with valid credentials and returns the current user's
 information.
@@ -152,7 +152,7 @@ information.
     }
     ```
 
-### Sign Up a User
+### Sign Up a User --done
 
 Creates a new user, logs them in as the current user, and returns the current
 user's information.

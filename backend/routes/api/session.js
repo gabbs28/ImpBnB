@@ -3,7 +3,8 @@ const express = require('express');
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
+//why are we importing restoreuser here?
+const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
 
 const { check } = require('express-validator');
@@ -69,9 +70,10 @@ router.post(
 // backend/routes/api/session.js
 // ...
 
-// Restore session user
+// Get the Current User
 router.get(
-    '/',
+    '/', 
+    requireAuth,
     (req, res) => {
       const { user } = req;
       if (user) {
@@ -87,7 +89,7 @@ router.get(
         });
       } else return res.json({ user: null });
     }
-  );
+);
 
 // Log out
 router.delete(
