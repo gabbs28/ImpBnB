@@ -5,6 +5,15 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       // define association here
+      User.hasMany(models.Spot),
+      User.hasMany(models.Booking),
+      User.hasMany(models.Review),
+      User.belongsToMany(models.Spot, {
+        through: models.Booking
+      }),
+      User.belongsToMany(models.Spot, {
+        through: models.Review
+      })
     }
   };
 

@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const booking = require('./booking');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     /**
@@ -11,10 +12,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Spot.hasMany(models.SpotImage),
+      Spot.hasMany(models.Booking),
+      Spot.hasMany(models.Review),
+      Spot.belongsTo(models.User),
+      Spot.belongsToMany(models.User, {
+        through: models.Booking
+      }),
+      Spot.belongsToMany(models.User, {
+        through: models.Review
+      })
     }
   }
   Spot.init({
-    ownerId: DataTypes.STRING,
+    ownerId: {
+      type: DataTypes.STRING,
+      allowNull:false,
+      
+    },
     address: DataTypes.STRING,
     city: DataTypes.STRING,
     state: DataTypes.STRING,
