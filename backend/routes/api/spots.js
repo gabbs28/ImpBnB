@@ -50,6 +50,8 @@ const validateSpot = [
 ];
 
 //routes go here
+
+//Get all Spots
 router.get("/api/spots", async(req, res, next) => {
 
     const getAllSpots= await Spot.findAll({
@@ -61,6 +63,13 @@ router.get("/api/spots", async(req, res, next) => {
     });
   }
 )
+// Get all Spots owned by the Current User
 
+//get details of spot from an id
+
+//create a spot
+router.post("/api/spots", validateSpot, async(req, res, next) =>{
+  return res.json(res.body);
+})
 
 module.exports = router;
