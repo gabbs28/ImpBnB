@@ -28,17 +28,71 @@ module.exports = (sequelize, DataTypes) => {
     ownerId: {
       type: DataTypes.STRING,
       allowNull:false,
-      
+      unique:true
     },
-    address: DataTypes.STRING,
-    city: DataTypes.STRING,
-    state: DataTypes.STRING,
-    country: DataTypes.STRING,
-    lat: DataTypes.DECIMAL,
-    lng: DataTypes.DECIMAL,
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    price: DataTypes.INTEGER
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isAlpha: true
+      }
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isAlpha: true
+      }
+    },
+    state: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isAlpha: true
+      }
+    },
+    country: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isAlpha: true
+      }
+    },
+    lat: {
+      type: DataTypes.DECIMAL,
+      allowNull: true,
+      validate: {
+        isDecimal: true
+      }
+    },
+    lng: {
+      type: DataTypes.DECIMAL,
+      allowNull: true,
+      validate: {
+        isDecimal: true
+      }
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1,49]
+      }
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isAlpha: true
+      }
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        isInt: true
+      }
+    }
   }, {
     sequelize,
     modelName: 'Spot',

@@ -9,7 +9,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
-const validateExample = [
+const validateSpot = [
     check('address')
       .exists({ checkFalsy: true })
       .withMessage('Street address is required'),
@@ -43,7 +43,7 @@ const validateExample = [
       .withMessage('Description is required'),
     check('price')
       .exists({ checkFalsy: true })
-      .isDecimal()
+      .isInt()
       .withMessage('Price per day is required'),
    
     handleValidationErrors
