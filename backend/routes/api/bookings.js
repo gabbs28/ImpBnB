@@ -19,6 +19,8 @@ const validateExample = [
 
 //routes go here
 
+//edit a booking
 
+//delete a booking
 
 module.exports = router;

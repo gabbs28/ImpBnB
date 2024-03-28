@@ -30,9 +30,11 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
+    //working with options on line 37
     options.tableName = 'Users';
+    //bringing in the operator class; it's for matching in the where clause 
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
+    await queryInterface.bulkDelete(options, {
       username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] }
     }, {});
   }

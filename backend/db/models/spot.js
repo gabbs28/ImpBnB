@@ -15,7 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       Spot.hasMany(models.SpotImage),
       Spot.hasMany(models.Booking),
       Spot.hasMany(models.Review),
-      Spot.belongsTo(models.User),
+      Spot.belongsTo(models.User, {
+        foreignKey: 'ownerId'
+      })
       Spot.belongsToMany(models.User, {
         through: models.Booking
       }),
@@ -33,30 +35,18 @@ module.exports = (sequelize, DataTypes) => {
     address: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        isAlpha: true
-      }
     },
     city: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        isAlpha: true
-      }
     },
     state: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        isAlpha: true
-      }
     },
     country: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        isAlpha: true
-      }
     },
     lat: {
       type: DataTypes.DECIMAL,
@@ -82,9 +72,6 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        isAlpha: true
-      }
     },
     price: {
       type: DataTypes.INTEGER,

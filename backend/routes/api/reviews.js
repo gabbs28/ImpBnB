@@ -8,16 +8,23 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
-const validateExample = [
-    check('email')
+const validateReview = [
+    check('review')
       .exists({ checkFalsy: true })
-      .isEmail()
-      .withMessage('Please provide a valid email.'),
+      .withMessage('Review text is required'),
+    check('stars')
+      .exists({ checkFalsy: true })
+      .isInt()
+      .isLength({min:1, max:5})
+      .withMessage('Stars must be an integer from 1 to 5'),
    
     handleValidationErrors
 ];
 
 //routes go here
+
+
+//
 
 
 
