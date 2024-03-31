@@ -2,7 +2,7 @@
 const express = require('express');
 
 const { requireAuth } = require('../../utils/auth');
-const { Spot, Review } = require('../../db/models');
+const { Spot, Review, SpotImage } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -59,30 +59,112 @@ const validateReview = [
   handleValidationErrors
 ];
 
+/*
+ASYNC HELPER METHOD TO GET REVIEW AVERAGE
+PASS IN A SPOT AND A NAME(VARIES)
+*/
+
+const addSpotAverageRating = async (spot, name) => {
+  //SELECT SUM(xx) FROM "Reviews" WHERE TRUE (if no where clause)
+  //SELECT SUM(xx) FROM "Reviews" WHERE spotId = spot.id
+  const sum = await Review.sum('stars', {
+    where: {
+      spotId: spot.id
+    }
+  });
+
+  if(sum <= 0) {
+    return spot[name] = null; // ask phillip if null is okay
+  }
+
+  //we have sum, need to call getReviewCount, sum/count = average
+  const count =  await getReviewCount(spot);
+
+  spot[name] = sum / count;
+}
+
+
+//-----------------------------------------------------------
+/*
+ASYNC HELPER METHOD TO GET SPOT PREVIEW IMAGE
+PASS IN A SPOT AND A NAME(VARIES)
+*/
+
+const addSpotPreviewImage = async (spot) => {
+  const image = await SpotImage.findOne({
+    where: {
+      spotId: spot.id  
+    }
+  });
+
+  spot.previewImage = image.url;
+}
+
+
+//-----------------------------------------------------------
+/*
+ASYNC HELPER METHOD TO GET REVIEW COUNT
+PASS IN A SPOT AND A NAME(VARIES)
+*/
+const getReviewCount = async (spot) => {
+  return await Review.count({
+    where: {
+      spotId: spot.id
+    }
+  });
+}
+
+const addReviewCount = async (spot, name) => {
+  /*
+   * if name === numReviews then spot[name] is the same as
+   * spot.numReviews = count
+   */
+  spot[name] = await getReviewCount(spot);
+}
+
+//console.log(getReviewCount(2, Review.review))
 //routes go here
 
 //Get all Spots
 router.get("/", async(req, res, next) => {
+  //() makes it go first
+  const spots = (await Spot.findAll())
+    .map(spot => spot.toJSON());
 
-  const getAllSpots= await Spot.findAll()
+  for(const spot of spots) {
+    //awaiting it bc it is an async func
+    await addSpotPreviewImage(spot)
 
-    getAllSpots.forEach(async(spot) => {
-      const image = await SpotImage.findOne({
-        where: {
-          spotId: spot.id 
-          
-        }
-      })
+    //Make database call to get count of review for the spot
+    //Make database call to get the sum of the reviews for the spot
+    //Do some math, watch out for divide by zero
+    const count = -1;
+    const sum = -1;
 
-      spot.previewImage = image.url
-    })
+    spot.avgRating = count / sum;
+  };
 
-  return res.json({Spots: getAllSpots});
+  return res.json({Spots: spots});
 });
 
 // Get all Spots owned by the Current User
+/*
+1. FIRST CHECK AUTH
+2. WRITE A QUERY TO GET ALL SPOTS,
+3. WHERE SPOTS OWNER ID === CURRENT USER
+
+*/
+  router.get("/", async(req, res, next) => {
+    const currentUserSpots = (await Spot.findAll())
+  })
 
 //get details of spot from an id
+
+/*
+1. QUERY FINDBYPK TO GET SPOT DETAILS
+2. INCLUDE SPOT IMAGES
+3. NAMED ASSOSICATION TO EAGER LOAD USER THROUGH OWNERID
+*/
 
 //create a spot
 router.post("/", validateSpot, async(req, res, next) =>{

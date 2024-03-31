@@ -10,7 +10,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       spotId: {
         type: Sequelize.INTEGER
@@ -23,7 +24,8 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+
       },
       updatedAt: {
         allowNull: false,

@@ -17,7 +17,12 @@ module.exports = {
       ownerId: {
         type: Sequelize.STRING,
         allowNull:false,
-        unique:true
+        unique:true,
+        references: {
+          //table name not model name; it needs to have the plural form
+          model: 'Users',
+          key: 'id'
+        }
       },
       address: {
         type: Sequelize.STRING,
