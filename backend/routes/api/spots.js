@@ -2,7 +2,7 @@
 const express = require('express');
 
 const { requireAuth } = require('../../utils/auth');
-const { Spot, Review, SpotImage } = require('../../db/models');
+const { Spot, Review, SpotImage, User } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -79,7 +79,7 @@ const addSpotAverageRating = async (spot, name) => {
 
   //we have sum, need to call getReviewCount, sum/count = average
   const count =  await getReviewCount(spot);
-
+  
   spot[name] = sum / count;
 }
 
@@ -125,6 +125,10 @@ const addReviewCount = async (spot, name) => {
 //console.log(getReviewCount(2, Review.review))
 //routes go here
 
+
+//-----------------------------------------------------------
+
+
 //Get all Spots
 router.get("/", async(req, res, next) => {
   //() makes it go first
@@ -132,31 +136,44 @@ router.get("/", async(req, res, next) => {
     .map(spot => spot.toJSON());
 
   for(const spot of spots) {
+
+    await addSpotAverageRating(spot, "avgRating"); 
     //awaiting it bc it is an async func
-    await addSpotPreviewImage(spot)
-
-    //Make database call to get count of review for the spot
-    //Make database call to get the sum of the reviews for the spot
-    //Do some math, watch out for divide by zero
-    const count = -1;
-    const sum = -1;
-
-    spot.avgRating = count / sum;
+    await addSpotPreviewImage(spot);
   };
 
   return res.json({Spots: spots});
 });
 
+//-----------------------------------------------------------
+
 // Get all Spots owned by the Current User
+
 /*
 1. FIRST CHECK AUTH
 2. WRITE A QUERY TO GET ALL SPOTS,
 3. WHERE SPOTS OWNER ID === CURRENT USER
 
 */
-  router.get("/", async(req, res, next) => {
-    const currentUserSpots = (await Spot.findAll())
-  })
+
+router.get("/current", requireAuth, async(req, res, next) => {
+    const spots = (await Spot.findAll({
+      where: {
+        ownerId : req.user.id
+      }
+    })).map(spot => spot.toJSON());
+
+    for(const spot of spots) {
+
+      await addSpotAverageRating(spot, "avgRating"); 
+      //awaiting it bc it is an async func
+      await addSpotPreviewImage(spot);
+    };
+  
+    return res.json({Spots: spots});
+})
+
+//-----------------------------------------------------------
 
 //get details of spot from an id
 
@@ -165,21 +182,104 @@ router.get("/", async(req, res, next) => {
 2. INCLUDE SPOT IMAGES
 3. NAMED ASSOSICATION TO EAGER LOAD USER THROUGH OWNERID
 */
+// /api/spots/3 <-- your request
+// /api/spots/:spotId <-- express
+// req.params.spotId === "3"
+// req.:spotId.spotId
+// /api/spots/3/reviews/5?imp=true
+// /api/spots/:spotId/reviews/:reviewId
+// req.params.spotId === "3" req.params.reviewId === "5"
+//req.query.imp === true
+
+router.get("/:spotId", async(req, res, next) => {
+  try {
+    const spot = (await Spot.findByPk(parseInt(req.params.spotId), { 
+      include: [
+        {
+          model: SpotImage,
+          attributes: ['id', 'url', 'preview']
+        },
+        {
+          model: User,
+          as: 'Owner',
+          attributes: ['id', 'firstName', 'lastName']
+        }
+      ]
+    })).toJSON();
+
+    await addReviewCount(spot, "numReviews")
+    await addSpotAverageRating(spot, "avgStarRating"); 
+
+    return res.json(spot);
+  } catch {
+    return res.status(404).json({message: "Spot couldn't be found"});
+  }
+});
+
+//-----------------------------------------------------------
 
 //create a spot
-router.post("/", validateSpot, async(req, res, next) =>{
-  return res.json(req.body);
+router.post("/", requireAuth, validateSpot, async(req, res, next) => {
+  //Set the spot owner to that of the current user
+  req.body.ownerId = req.user.id;
+
+  //Create the spot
+  var spot = await Spot.create(req.body);
+
+  return res.status(201).json(spot);
 })
 
+//-----------------------------------------------------------
 //Add an Image to a Spot based on the Spot's id
 
+//-----------------------------------------------------------
 //Edit a Spot
-router.put("/:spotId", validateSpot, async(req, res, next) =>{
-  return res.json(req.body);
-})
+router.put("/:spotId", requireAuth, validateSpot, async(req, res, next) => {
+  //Look up the spot to be deleted (filter out spots not owned by the user)
+  const spot = await Spot.findByPk(parseInt(req.params.spotId), {
+    where: {
+      ownerId: req.body.id
+    }
+  });
 
+  //If no spot is found return an error message
+  if (!spot) {
+    return res.status(404).json({message: "Spot couldn't be found"});
+  }  
+
+  //Make sure the spot will remained owned by the orginal user
+  req.body.ownerId = req.user.id;
+
+  //Update the spot
+  await spot.update(req.body);
+
+  //Return the updated spot (make sure the call to update actually updates the variable)
+  return res.json(spot);
+});
+
+//-----------------------------------------------------------
 //Delete a Spot
+router.delete("/:spotId", requireAuth, async(req, res, next) => {
+  //Look up the spot to be deleted (filter out spots not owned by the user)
+  const spot = await Spot.findByPk(parseInt(req.params.spotId), {
+    where: {
+      ownerId: req.body.id
+    }
+  });
 
+  //If no spot is found return an error message
+  if (!spot) {
+    return res.status(404).json({message: "Spot couldn't be found"});
+  }
+
+  //Delete the spot
+  await spot.delete();
+
+  //Yay!
+  return res.json({message: "Successfully deleted"});
+});
+
+//-----------------------------------------------------------
 //Create a Review for a Spot based on the Spot's id
 
 router.post("/:spotId/reviews", requireAuth, validateReview, async (req, res, next) => {

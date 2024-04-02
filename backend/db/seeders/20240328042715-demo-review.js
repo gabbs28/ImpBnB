@@ -1,6 +1,6 @@
 'use strict';
 
-const { Spot } = require('../models');
+const { Spot, Review } = require('../models');
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -27,6 +27,12 @@ module.exports = {
         spotId: 3,
         review: "love the riverfront",
         stars: 4
+      },
+      {
+        userId: 1,
+        spotId: 3,
+        review: "love the riverfront",
+        stars: 5
       }
 
     ])

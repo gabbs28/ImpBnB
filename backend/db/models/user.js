@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Spot, {
         foreignKey: 'ownerId'
       })
+      User.hasMany(models.Spot, {
+        foreignKey: 'ownerId',
+        as: 'Owner'
+      })
       User.hasMany(models.Booking),
       User.hasMany(models.Review),
       User.belongsToMany(models.Spot, {
