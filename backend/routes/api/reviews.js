@@ -24,8 +24,33 @@ const validateReview = [
 //routes go here
 
 
-//
+//Returns all the reviews written by the current user.
+router.get("/current", requireAuth, async(req, res, next) => {
+  const reviews = (await Review.findAll({
+    where: {
+      ownerId : req.user.id
+    }
+  })).map(spot => spot.toJSON());
+
+  for(const spot of spots) {
+
+    await addSpotAverageRating(spot, "avgRating"); 
+    //awaiting it bc it is an async func
+    await addSpotPreviewImage(spot);
+  };
+
+  return res.json({Spots: spots});
+})
+
+//Get all Reviews by a Spot's id: Returns all the reviews that belong to a spot specified by id.
 
 
+//Create a Review for a Spot based on the Spot's id: Create and return a new review for a spot specified by id.
+
+//Add an Image to a Review based on the Review's id: Create and return a new image for a review specified by id.
+
+//Edit a Review: Update and return an existing review.
+
+//Delete a Review: Delete an existing review.
 
 module.exports = router;

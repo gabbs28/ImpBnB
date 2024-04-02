@@ -304,5 +304,7 @@ router.post("/:spotId/reviews", requireAuth, validateReview, async (req, res, ne
   }
 })
 
+//Add Query Filters to Get All Spots
+
 
 module.exports = router;

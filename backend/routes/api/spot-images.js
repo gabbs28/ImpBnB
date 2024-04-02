@@ -19,6 +19,7 @@ const validateExample = [
 
 //routes go here
 
+//Delete a Spot Image
 
 
 module.exports = router;
