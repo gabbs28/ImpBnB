@@ -7,22 +7,25 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Spot, {
         foreignKey: 'ownerId'
-      })
+      });
       User.hasMany(models.Spot, {
         foreignKey: 'ownerId',
         as: 'Owner'
-      })
-      User.hasMany(models.Booking),
-      User.hasMany(models.Review),
-      User.belongsToMany(models.Spot, {
-        through: models.Booking
-      }),
-      User.belongsToMany(models.Spot, {
-        through: models.Review
-      })
+      });
+      User.hasMany(models.Booking,{
+        foreignKey: 'userId'
+      });
+      User.hasMany(models.Review, {
+        foreignKey: 'userId'
+      });
+      // User.belongsToMany(models.Spot, {
+      //   through: models.Booking,
+      //   foreignKey: {
+      //     name: 'spotId'
+      //   }
+      // });
     }
-  };
-
+  }
   User.init(
     {
       username: {
