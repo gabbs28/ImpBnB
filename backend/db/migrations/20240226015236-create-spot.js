@@ -15,14 +15,15 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       ownerId: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull:false,
         unique:true,
         references: {
-          //table name not model name; it needs to have the plural form
           model: 'Users',
           key: 'id'
-        }
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       address: {
         type: Sequelize.STRING,
@@ -63,17 +64,19 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
   },
+
   async down(queryInterface, Sequelize) {
+    //the options will also have the schema set
     options.tableName = "Spots";
-    return queryInterface.dropTable(options);
+    return await queryInterface.dropTable(options);
   }
 };

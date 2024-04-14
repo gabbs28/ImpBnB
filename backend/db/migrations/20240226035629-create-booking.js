@@ -7,41 +7,36 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    options.tableName = "Reviews";
-
-    await queryInterface.createTable('Reviews', {
+    await queryInterface.createTable('Bookings', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Users",
-          key: "id"
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
       spotId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
-          model: "Spots",
-          key: "id"
+          model: 'Spots',
+          key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      review: {
-        type: Sequelize.STRING
-      },
-      stars: {
+      userId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
+      startDate: {
+        type: Sequelize.DATE
+      },
+      endDate: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -54,17 +49,11 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
-
-    await queryInterface.addConstraint(options, {
-      fields: ['userId', 'spotId'],
-      type: 'unique',
-      name: 'unique_user_spot_review_constraint'
-    });
   },
 
   async down(queryInterface, Sequelize) {
     //the options will also have the schema set
-    options.tableName = "Reviews";
+    options.tableName = "Bookings";
     return await queryInterface.dropTable(options);
   }
 };

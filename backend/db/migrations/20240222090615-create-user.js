@@ -52,6 +52,6 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     //the options will also have the schema set
     options.tableName = "Users";
-    return queryInterface.dropTable(options);
+    return await queryInterface.dropTable(options);
   }
 };
