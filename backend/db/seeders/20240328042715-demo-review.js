@@ -1,6 +1,6 @@
 'use strict';
 
-const { Spot, Review } = require('../models');
+const { Review } = require('../models');
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -12,13 +12,13 @@ module.exports = {
     await Review.bulkCreate([
       {
         userId: 1,
-        spotId: 2,
+        spotId: 1,
         review: "best city studio",
         stars: 4
       },
       {
         userId: 2,
-        spotId: 1,
+        spotId: 2,
         review: "best city apartment",
         stars: 5
       },
@@ -34,16 +34,16 @@ module.exports = {
         review: "love the riverfront",
         stars: 5
       }
-
-    ])
+    ], { validate: true })
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    //working with options on line 37
+    options.tableName = 'Reviews';
+    //bringing in the operator class; it's for matching in the where clause
+    const Op = Sequelize.Op;
+    await queryInterface.bulkDelete(options, {
+      review: { [Op.in]: ['best city studio', 'best city apartment', 'love the riverfront'] }
+    }, {});
   }
 };

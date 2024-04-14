@@ -25,12 +25,12 @@ module.exports = {
         url: "https://a0.muscache.com/im/pictures/e7eb8b0b-53db-45da-94d0-ccbfcdf90f59.jpg?im_w=1200",
         preview: true
       }
-    ])
+    ], { validate: true })
   },
 
   async down (queryInterface, Sequelize) {
     //working with options on line 37
-    options.tableName = 'SpotImage';
+    options.tableName = 'SpotImages';
     //bringing in the operator class; it's for matching in the where clause 
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options, {
