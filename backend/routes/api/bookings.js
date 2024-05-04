@@ -1,11 +1,11 @@
-const express = require('express');
+const router = require('express').Router();
 
-const { requireAuth } = require('../../utils/auth');
-const { Booking, Spot, SpotImage, User } = require('../../db/models');
+const get = require('./bookings/get.js');
+const edit = require('./bookings/put.js');
+const del = require('./bookings/delete.js');
 
-const { body, param, query } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
-
-const router = express.Router();
+router.use(get);
+router.use(edit);
+router.use(del);
 
 module.exports = router;

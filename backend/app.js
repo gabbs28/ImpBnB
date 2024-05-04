@@ -79,14 +79,14 @@ app.use((err, _req, res, _next) => {
   console.error(err);
 
   const json = {
-    title: err.title || 'Server Error',
+    //title: err.title || 'Server Error',
     message: err.message,
     errors: err.errors,
   };
 
-  if (!isProduction) {
-    json.stack = err.stack
-  }
+  // if (!isProduction) {
+  //   json.stack = err.stack
+  // }
 
   res.json(json);
 });
