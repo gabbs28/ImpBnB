@@ -1,25 +1,7 @@
-const express = require('express');
+const router = require('express').Router();
 
-const { requireAuth } = require('../../utils/auth');
-const { SpotImage } = require('../../db/models');
+const del = require('./spot-images/delete.js');
 
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
-
-const router = express.Router();
-
-const validateExample = [
-    check('email')
-      .exists({ checkFalsy: true })
-      .isEmail()
-      .withMessage('Please provide a valid email.'),
-   
-    handleValidationErrors
-];
-
-//routes go here
-
-//Delete a Spot Image
-
+router.use(del);
 
 module.exports = router;

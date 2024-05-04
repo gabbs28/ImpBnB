@@ -55,7 +55,7 @@ module.exports = {
       }
     }, options);
 
-    await queryInterface.addConstraint(options, {
+    await queryInterface.addIndex(options, {
       fields: ['userId', 'spotId'],
       type: 'unique',
       name: 'unique_user_spot_review_constraint'
