@@ -4,7 +4,9 @@ const adminRouter = require('./admin.js');
 const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
 const spotsRouter = require('./spots.js');
+const spotImagesRouter = require('./spot-images.js');
 const reviewsRouter = require('./reviews.js');
+const reviewImagesRouter = require('./review-images.js');
 const bookingsRouter = require('./bookings.js');
 const { restoreUser } = require("../../utils/auth.js");
 
@@ -21,7 +23,11 @@ router.use('/users', usersRouter);
 
 router.use('/spots', spotsRouter);
 
+router.use('/spot-images', spotImagesRouter);
+
 router.use('/reviews', reviewsRouter);
+
+router.use('/review-images', reviewImagesRouter);
 
 router.use('/bookings', bookingsRouter);
 
