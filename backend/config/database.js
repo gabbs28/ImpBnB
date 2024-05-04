@@ -1,3 +1,6 @@
+// Import environment variables
+require('dotenv').config();
+
 const config = require('./index');
 
 module.exports = {
