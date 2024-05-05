@@ -72,10 +72,9 @@ router.post(
 
 // Get the Current User
 router.get(
-    '/', 
-    requireAuth,
+    '/',
     (req, res) => {
-      const { user } = req;
+      const { user } = req; 
       if (user) {
         const safeUser = {
           id: user.id,

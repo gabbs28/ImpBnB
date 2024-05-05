@@ -484,22 +484,37 @@ router.get("/:spotId/bookings", requireAuth, async(req, res, _next) => {
     return res.status(404).json({ message: "Spot couldn't be found" })
   }
 
+
+  //Successful Response: If you ARE NOT the owner of the spot.
+
+  //check if spot belongs to current user
+  if (spot.ownerId !== req.user.id) {
+
+    const bookings = await spot.getBookings({
+      attributes: {
+        exclude: ["id", "userId", "createdAt", "updatedAt"]
+      }
+    });
+
+
+    return res.json({ Bookings: bookings })
+  }
+
+  //Successful Response: If you ARE the owner of the spot.
+
 // have to have a spot in order to get reviews
-  const reviews = await spot.getReviews({
+  const bookings = await spot.getBookings({
     include: [
       {
         model: User,
         attributes: ["id", "firstName", "lastName"],
-      },
-      {
-        model: ReviewImage,
-        attributes: ["id", "url"],
       }
     ],
   });
 
   
-  return res.json({Reviews : reviews})
+  return res.json({ Bookings: bookings })
+
 })
 
 
