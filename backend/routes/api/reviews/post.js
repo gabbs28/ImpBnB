@@ -83,6 +83,11 @@ Create and return a new image for a review specified by id.
           return res.status(403).json({ message: "Forbidden" })
         }
       
+        const numOfImages = await review.countReviewImage()
+
+        if (numOfImages >= 10){
+          return res.status(403).json({ message: "Maximum number of images for this resource was reached" })
+        }
         //making the image
         //add an image to SpotImages making the spotId matches to the spot.id
         //adding by attaching createSpotImage to spot variable
