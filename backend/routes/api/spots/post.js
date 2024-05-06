@@ -251,27 +251,43 @@ Create and return a new review for a spot specified by id.
     ```
 */
 
-router.post("/:spotId/reviews", requireAuth, validateReview, async(req, res, _next) => {
+/*
+     {
+      "id": 1,
+      "userId": 1,
+      "spotId": 1,
+      "review": "This was an awesome spot!",
+      "stars": 5,
+      "createdAt": "2021-11-19 20:39:36",
+      "updatedAt": "2021-11-19 20:39:36"
+    }
+*/
+
+router.post("/:spotId/reviews", requireAuth, validateReview, async(req, res, next) => {
   //check for data in psotman
   //check terminal queries
   //change error message and confirm error message changes
   //now know we are in endpoint but failing at spot not found
     //looking for spot to add image to
-    const spot = await Spot.findByPk(req.params.spotId)
+  const spot = await Spot.findByPk(req.params.spotId)
   
     //check if spot was found
-    if (spot === null) {
-      return res.status(404).json({ message: "Spot couldn't be found" })
-    }
+  if (spot === null) {
+    return res.status(404).json({ message: "Spot couldn't be found" })
+  }
   try{
     //code you want to attempt
-    const review = await spot.createReview({...req.body, userId: req.user.id})
+    req.body.userId= req.user.id
+    const review = await spot.createReview(req.body)
   
     return res.status(201).json(review)
-  }catch(error){
+  }catch(error) {
     //first line of code goes to catch
-    //return res.status(500).json({ message: "User already has a review for this spot" })
-    _next(error)
+      if (error.name === "SequelizeUniqueConstraintError") {
+        return res.status(500).json({ message: "User already has a review for this spot" })
+      }
+
+      return next(error);
   }
 
   });
