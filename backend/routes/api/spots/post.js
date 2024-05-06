@@ -265,7 +265,7 @@ router.post("/:spotId/reviews", requireAuth, validateReview, async(req, res, _ne
     }
   try{
     //code you want to attempt
-    const review = await spot.createReview(req.body)
+    const review = await spot.createReview({...req.body, userId: req.user.id})
   
     return res.status(201).json(review)
   }catch(error){
