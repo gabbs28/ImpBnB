@@ -109,7 +109,7 @@ Update and return an existing booking.
 router.put("/:bookingId", requireAuth, validateBooking, async(req, res, _next) => {
 
   //looking for booking
-  const booking = await Spot.findByPk(req.params.bookingId)
+  const booking = await Booking.findByPk(req.params.bookingId)
  
   //check if booking was found
   if (booking === null) {

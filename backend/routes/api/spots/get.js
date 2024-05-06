@@ -4,6 +4,8 @@ const express = require('express');
 const { requireAuth } = require('../../../utils/auth');
 const { ReviewImage, Spot, SpotImage, User, Review } = require('../../../db/models');
 
+const { validateGetSpotQueryParams } = require('./validate.js');
+
 const router = express.Router();
 
 /*
@@ -48,7 +50,7 @@ Returns all the spots.
     ```
 */
 
-router.get("/", async(req, res, _next) => {
+router.get("/", validateGetSpotQueryParams, async(req, res, _next) => {
   //findAll returns an array of sequelize models
   let spots = await Spot.findAll({
     include: [
@@ -102,7 +104,7 @@ router.get("/", async(req, res, _next) => {
     delete spot.SpotImages
   }
 
-  return res.json({Spots: spots})
+  return res.json({Spots: spots, page: req.query.page, size: req.query.size})
 })
 
 /*

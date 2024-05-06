@@ -188,7 +188,7 @@ Create and return a new review for a spot specified by id.
     ```json
     {
       "review": "This was an awesome spot!",
-      "stars": 5,
+      "stars": 5
     }
     ```
 
@@ -270,7 +270,8 @@ router.post("/:spotId/reviews", requireAuth, validateReview, async(req, res, _ne
     return res.status(201).json(review)
   }catch(error){
     //first line of code goes to catch
-    return res.status(500).json({ message: "User already has a review for this spot" })
+    //return res.status(500).json({ message: "User already has a review for this spot" })
+    _next(error)
   }
 
   });

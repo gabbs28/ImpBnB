@@ -53,7 +53,7 @@ router.delete("/:reviewId", requireAuth, async(req, res, _next) => {
 
     //be aware of what type req.params is returning
     const review = await Review.findByPk(
-        parseInt(req.params.spotId)
+        parseInt(req.params.reviewId)
     );
 
 

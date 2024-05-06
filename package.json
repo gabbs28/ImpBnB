@@ -9,6 +9,7 @@
     "sequelize": "npm run --prefix backend sequelize",
     "sequelize-cli": "npm run --prefix backend sequelize-cli",
     "start": "npm start --prefix backend",
+    "start:development": "npm run start:development --prefix backend",
     "build": "npm run --prefix backend build",
     "db-reset": "npm run --prefix backend db-reset"
   },
