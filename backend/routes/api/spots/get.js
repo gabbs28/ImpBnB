@@ -52,18 +52,26 @@ Returns all the spots.
 
 router.get("/", validateGetSpotQueryParams, async(req, res, _next) => {
   //findAll returns an array of sequelize models
+  let page = req.query.page
+  let size = req.query.size
+  let limit = size;
+  let offset = size * (page - 1);
+
   let spots = await Spot.findAll({
     include: [
       {
-        model: Review
+        model: Review,
+        required: false
       },
       {
         model: SpotImage,
         where: {
           preview: true
-        }
+        },
+        required: false
       }
     ],
+    limit, offset
   });
 
   spots = spots.map(spot => spot.toJSON())
@@ -155,13 +163,15 @@ router.get("/current", requireAuth, async(req, res, _next) => {
     },
     include: [
       {
-        model: Review
+        model: Review,
+        required: false
       },
       {
         model: SpotImage,
         where: {
           preview: true
-        }
+        },
+        required: false
       }
     ],
   });
