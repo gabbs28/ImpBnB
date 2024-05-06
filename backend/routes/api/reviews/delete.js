@@ -58,7 +58,7 @@ router.delete("/:reviewId", requireAuth, async(req, res, _next) => {
 
 
     if (review === null) {
-        return res.status(404).json({ message: "Spot couldn't be found" })
+        return res.status(404).json({ message: "Review couldn't be found" })
     }
 
     if (review.userId !== req.user.id) {

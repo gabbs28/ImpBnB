@@ -72,7 +72,7 @@ router.delete("/:bookingId", requireAuth, async(req, res, _next) => {
         return res.status(404).json({ message: "Booking couldn't be found" })
     }
 
-    if (booking.ownerId !== req.user.id) {
+    if (booking.userId !== req.user.id) {
         return res.status(403).json({ message: "Forbidden" })
     }
 

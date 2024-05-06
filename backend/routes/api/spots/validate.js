@@ -46,12 +46,12 @@ const validateSpot = [
     body('lat')
       .exists({ checkFalsy: true })
       .notEmpty()
-      .isDecimal()
+      .isFloat({min: -90, max: 90})
       .withMessage('Latitude is not valid'),
     body('lng')
       .exists({ checkFalsy: true })
       .notEmpty()
-      .isDecimal()
+      .isFloat({min: -180, max: 180})
       .withMessage('Longitude is not valid'),
     body('name')
       .exists({ checkFalsy: true })
