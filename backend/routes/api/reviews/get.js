@@ -96,14 +96,14 @@ router.get("/current", requireAuth, async(req, res, _next) => {
       }
     ],
   });
-  console.log(reviews)
+
   reviews = reviews.map(review => review.toJSON())
 
   //now I can manipulate the data
   //Review -> star rating -> avgRating
   //SpotImages -> url -> previewImage
 
-  console.log(reviews)
+
   //for (in) is for objects
   //for (of) is for arrays
   for(const review of reviews){
