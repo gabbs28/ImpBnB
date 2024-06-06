@@ -16,6 +16,17 @@ if (process.env.NODE_ENV !== 'production') {
   window.store = store;
 }
 
+// ... other imports
+import { restoreCSRF, csrfFetch } from './store/csrf';
+
+// ... const store = configureStore();
+
+if (import.meta.env.MODE !== 'production') {
+  restoreCSRF();
+
+  window.csrfFetch = csrfFetch;
+  window.store = store;
+}
 // frontend/src/main.jsx
 
 // ...
