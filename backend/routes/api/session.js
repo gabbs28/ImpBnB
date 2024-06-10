@@ -24,12 +24,6 @@ const validateLogin = [
     check('password')
       .exists({ checkFalsy: true })
       .withMessage('Please provide a password.'),
-    check('firstName')
-      .exists({ checkFalsy: true })
-      .withMessage('Please provide a first name.'),
-    check('lastName')
-      .exists({ checkFalsy: true })
-      .withMessage('Please provide a last name.'),
     handleValidationErrors
 ];
 

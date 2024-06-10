@@ -1,0 +1,7 @@
+.profile-button {
+    font-family: Arial, sans-serif;
+}
+
+.profile-button .hidden {
+    display: none;
+}

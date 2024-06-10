@@ -1,0 +1,26 @@
+.login-form-page {
+    font-family: Arial, sans-serif;
+}
+
+.login-form-page p.error {
+    color: red;
+}
+
+.login-form-page h1 {
+    font-weight: normal;
+}
+
+.login-form-page button {
+    font-weight: bold;
+    color: red;
+}
+
+.login-form-page button.happy {
+    font-weight: bold;
+    color: purple;
+}
+
+.login-form-page label {
+    display: block;
+    margin-bottom: 5px;
+}
