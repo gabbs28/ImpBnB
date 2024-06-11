@@ -1,0 +1,8 @@
+.login-form-modal {
+    font-family: Arial, sans-serif;
+}
+
+.login-form-modal label {
+    display: block;
+    margin-bottom: 5px;
+}

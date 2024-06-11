@@ -1,0 +1,21 @@
+.open-modal-button {
+    font-family: Arial, sans-serif;
+}
+
+.open-modal-button p.error {
+    color: red;
+}
+
+.open-modal-button h1 {
+    font-weight: bold;
+}
+
+.open-modal-button button.feisty {
+    font-weight: bold;
+    color: red;
+}
+
+.open-modal-button button.happy {
+    font-weight: bold;
+    color: purple;
+}

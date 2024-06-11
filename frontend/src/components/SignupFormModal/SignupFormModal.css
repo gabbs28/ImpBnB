@@ -1,0 +1,12 @@
+.signup-form-modal {
+    font-family: Arial, sans-serif;
+}
+
+.signup-form-modal label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.signup-form-modal p.error {
+    color: red;
+}
